@@ -36,6 +36,27 @@ Other agents were trained by repeating more iterations, but those agents perform
     (6) Train a blocker against (5)
 Our understanding is that blocker (6) has learned to block a runner which tries to go around the blocker. Blocker (6) was never placed in an environment against runner (1) which goes straight to the checkpoint: hence the blocker's unability to obstruct runner (1)'s path.
 
+
+## Simultaneous runner/blocker training
+### Failed attempt #1
+#### Description
+As discussed above, the main limitation we were faced with originated from the fact that only one agent learned to improve its policy from the environment while the other agent had a fixed policy.
+We created an environment with which two neural networks interacted: one controlled the blocker, the other one controlled the runner.
+In a Q-learning framework, each agent predicted the expected future discounted reward for the 6 actions it was allowed to perform.
+Our hope was to train both agents simultaneously so that they would converge towards an optimal adversarial strategy.
+#### Results
+Upon training and submitting the code on CG servers, the results obtained were disappointing.
+Our implementation may have been lackluster, as discussions with people familiar in the field have shown that "*it should have worked.*"
+
+### Failed attempt #2
+#### Description
+Same as above, but with one neural network with 12 output values instead of two neural networks with 6 output values each.
+#### Results
+Same as above.
+
+
+
+
 3- Décrire notre approche avec Nactions^2, MatrixSolver
 Link l’article
 
