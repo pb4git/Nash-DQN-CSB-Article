@@ -8,7 +8,7 @@ Test Markdown
 
 ## Training a blocker against a fixed opponent
 
-Q-Learning was described above as a value-based technique where an agent learns a value function above all (State, Action) pairs by interacting with its environment.
+Q-Learning was described above as a value-based technique where an agent learns a value function over all (State, Action) pairs by interacting with its environment.
 
 If the runner is considered as part of the environment, a blocker can be trained can be trained with the same Q-learning framework that was described for the runner alone.
 
