@@ -52,7 +52,7 @@ Our implementation may have been lackluster, as discussions with people familiar
 #### Description
 Same as above, but with one neural network with 12 output values instead of two neural networks with 6 output values each.
 #### Results
-Same as above.
+Same as above. We made two completely independent implementations of this technique with bad results in both cases.
 
 
 
