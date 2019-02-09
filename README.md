@@ -1,8 +1,10 @@
 # CSB-Q-Learning
 
-Since the new year we have been attempting reinforcement learning on Coders Strike Back (CSB) again. This time we have had a lot more success and reached the number 1 spot on the leaderboard, achieving close to 100% winrate against Pen's excellent AI which stood unchallenged for long. We are thrilled with this achievement and the fact that we have inspired other players like fenrir to pursue the same goal. With the Xmas Rush contest, players brought MCTS and simultaneous-move handling techniques which had been previously unseen on Codingame (CG). And similarly with this work we hope to bring new techniques of reinforcement learning on the platform.
+Since the new year we have been attempting reinforcement learning (RL) on Coders Strike Back (CSB) again. This time we have had a lot more success and reached the number 1 spot on the leaderboard, achieving close to 100% winrate against Pen's excellent AI which stood unchallenged for long. We are thrilled with this achievement and the fact that we have inspired other players like fenrir to pursue the same goal. With the Xmas Rush contest, players brought MCTS and simultaneous-move handling techniques which had been previously unseen on Codingame (CG). And similarly with this work we hope to bring new techniques of reinforcement learning on the platform.
 
 1- Ré-expliquer comment on a fait un runner simple, ça permet de ré-introduire les bases du Q-learning (évaluer chaque action + lister les raffinements utilisés come PER IS, double, etc..)
+
+? - Mentionner tous les hacks techniques pour faire passer un NN sur CG?
 
 ## Neural Networks
 
@@ -20,6 +22,7 @@ The goal of Q learning is to learn these Q values, corresponding to perfect play
 ```
 Q(state,action)=immediate_reward+γ*maxQ(next_state,action)
 ```
+
 In 2015 Deepmind published the Deep Q learning [paper](https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf) (DQN). Instead of having Q learning restricted to games with a finite number of states and actions they generalise it to infinite games by using a Neural Network (NN) as a function approximator for Q values. Thus instead of looking up Qs in a table, you would feed in a representation of the state action pair and the network would output the Q value. For computational efficiency they restricted themselves to games with finite actions and the network outputs the Q values for all actions of a given state in one forward pass. They call this NN a Deep Q Network (DQN).
 
 If you read the paper carefully you will find that they use several techniques to achieve convergence: 
@@ -33,15 +36,26 @@ Deepmind has since published several papers improving upon DQN. For example Deep
 target_action=argmaxDQN(next_state,action)
 DQN(state,action):=immediate_reward+γ*DQN_Frozen(next_state,target_action)
 ```
-See the [paper](https://arxiv.org/pdf/1509.06461.pdf) for a more detailed explanation.
+See the [paper](https://arxiv.org/pdf/1509.06461.pdf) for a more detailed explanation. Whereas "supervised learning" learns from a dataset of (input,output) by backpropagating errors on the desired output, reinforcement learning techniques "find their own target" on which to backpropagate. And in the case of Q learning it is given by this Bellman equation.
 
 A major improvement we also used is prioritised experience replay where instead of selecting memories uniformily at random from the memory, transitions which are most misunderstood by the network have a higher probability of being selected. When transitions are experienced they are added to memory with a high priority, to encourage that transitions are learned from at least once. And when a transition is selected its Temporal Difference Error (TD Error) is measured and its priority is updated as:
 ```
-prio:=epsilon_prio+TD_Error^prio_alpha
+prio=(epsilon_prio+TD_Error)^prio_alpha
 ```
 where the TD Error is the error on the supposed equality in the Bellman equation. We used the proportional prioritisation variant mentioned in the [paper](https://arxiv.org/pdf/1511.05952.pdf). This used a sum-tree data structure in order to be able to select samples according to priority in logarithmic time.
+```
+P_prioritized=Sample_prio/Total_Prio_In_Sum_Tree
+```
+Because samples are selected according to a different distribution to the distribution with which these transitions are experienced, an importance sampling (IS), correction is applied to the gradient:
+```
+IS_Correction=P_uniform/P_prioritized=Sample_prio/(Memory_Size*Total_Prio_In_Sum_Tree)
+```
 
-? - Mentionner tous les hacks techniques pour faire passer un NN sur CG?
+## Training a single runner
+
+Having introduced Q learning, let's talk about the simplest objective you can set yourself as a "Hello world" to get started. One thing you can do is take an existing AI and learn to copy its actions by training a neural network via supervised learning. If you are confident you have a working neural network implementation, you can then try your hands at reinforcement learning. The simplest game to do so on CG, to our knowledge is CSB. You can train a single runner to pass checkpoints as fast as possible with DQN in a 1 pod versus no enemies environment. The state can be represented with a dozen floating point values encoding the position of the next 2 checkpoints relative to the pod, its current speed and its current angle. If you succesfully train a runner agent, you can play greedily according to the Q values for both of your pods and thus make a double runner AI which in our experience can reach approximately rank 150 in legend.
+
+If you can succesfully do this you'll have achieved your first RL AI. In order to reach higher on the leaderboard training a blocker and a runner than can deal with blockers will be necessary.
 
 ## Training a blocker against a fixed opponent
 
