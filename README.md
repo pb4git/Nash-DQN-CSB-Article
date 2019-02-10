@@ -1,6 +1,5 @@
-# CSB-Q-Learning
-
-In 2017, we (Agade and pb4) had a go at cracking Coders Strike Back (CSB) with Reinforcement Learning methods. Despite mitigated results at the time, our second attempt took place early in 2019. This endeavor proved to be a huge success : we now occupy the number 1 spot on the leaderboard, and have achieved over 95% winrate against Pen's previously uncontested AI.
+# How we applied Q-Learning to Coders Strike Back and reached the top of the leaderboard
+In 2017, we (Agade and pb4) had a go at cracking Coders Strike Back (CSB) with Reinforcement Learning methods. Despite mitigated results at the time, our second attempt took place early in 2019. This endeavor proved to be a huge success: we now occupy the number 1 spot on the leaderboard and have achieved over 95% winrate against Pen's previously uncontested AI.
 We are thrilled with this achievement and the fact that we have inspired other players to pursue the same goal. 
 CSB is a fertile multiplayer puzzle where the widest variety of algorithms is/are (? je dirais is) showcased at the top of the leaderboard before disseminating on the platform. And similarly with this work, we hope to bring new techniques of reinforcement learning on the platform.
 
@@ -63,7 +62,7 @@ If you can succesfully do this you'll have achieved your first RL AI. In order t
 
 Q-Learning was described above as a value-based technique where an agent learns a value function over all (State, Action) pairs by interacting with its environment.
 
-If the runner is considered as part of the environment, a blocker can be trained can be trained with the same Q-learning framework that was described for the runner alone.
+If the runner is considered as part of the environment, a blocker can be trained with the same Q-learning framework that was described for the runner alone.
 
 Rewards are defined as follows:
  - -1 when the runner takes a checkpoint
