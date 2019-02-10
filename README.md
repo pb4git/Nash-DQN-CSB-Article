@@ -1,4 +1,4 @@
-![Alt text](CSB-Q-Learning/img/leaderboard.png "Title")
+![Alt text](img/leaderboard.png "Title")
 
 
 # How we applied Q-Learning to Coders Strike Back and reached the top of the leaderboard
