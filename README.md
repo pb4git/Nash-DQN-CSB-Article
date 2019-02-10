@@ -225,7 +225,7 @@ The figures below illustrate the fact that:
 - it takes a very long time for the Temporal Difference error metric to reach a stable position
 - all other metrics have converged
 
-Empirically, the authors believe that the network stopped improving it terms of *TruSkill score when submitted on CG* after 4000 steps.
+Empirically, we believe that the network stopped improving it terms of *TrueSkill score when submitted on CG* after 4000 steps.
 
 ![](/img/alliterations/fig_AVG_TD_Error_vs_steps.png)
 ![](/img/alliterations/fig_AvgQ_MaxQ.png)
