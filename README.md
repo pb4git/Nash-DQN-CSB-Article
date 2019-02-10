@@ -126,7 +126,7 @@ Same as above, but with one neural network with 12 output values instead of two 
 #### Results
 Same as above. We made two completely independent implementations of this technique with bad results in both cases.
 
-### The Breakthrough !
+### Attempt #3 : The Breakthrough !
 #### Inspiration from Minimax Q Learning
 Success came with inspiration from this [paper](https://www2.cs.duke.edu/courses/spring07/cps296.3/littman94markov.pdf) which describes a combination of Q learning and Minimax, the classic algorithm used for example by Stockfish in chess. Just like Q learning the paper dates from before the era of deep learning but can be adapted to neural networks, just like the DQN paper did with Q learning.
 
@@ -173,13 +173,14 @@ The paper seemingly gives a different formula for the bellman equation at the bo
 
 Now that we have transformed the problem back into the framework of 1 network controlling agents in an environment, we can use all the techniques of Deep Q Learning, Deep Double Q learning, prioritized experience replay etc... With this method we were able to train a runner and a blocker into some approximation of the Nash equilibrium which reached very high levels of play on the leaderboard, easily rivalling all other search methods currently on the leaderboard.
 
-Training from scratch, in our best implementations, on a crappy laptop processor:
+Training from scratch, in our best implementations:
  - the runner learns to finish races within 30 seconds of training
  - the blocker will *wake-up* and make the runner timeout its first race after 7 minutes of training
  - within 30mn of training, the AI challenges pen on the leaderboard
  - within 12-24hours (*hard to tell...*) the network has converged and ceases to improve
 
 ## Results
+See figure at the top of the article to learn more about the relative strength of the versions described below.
 ### Vanilla (Depth 0)
 Our Q-Learning framework trained a neural network to predict the expected future discounted rewards for the runner for pair of actions taken by the runner and the blocker on this turn.
 The iterative matrix-game solver is applied to the output to provide optimal mixed strategies for both agents in this zero-sum simultaneous game.
