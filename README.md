@@ -7,9 +7,6 @@ CSB is a unique multiplayer game where the widest variety of algorithms have dom
 
 ![Alt text](img/cgstats.png "cgstats")
 
-TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO
-Mentionner tous les hacks techniques pour faire passer un NN sur CG?
-
 ## Neural Networks
 
 In this article we assume some knowledge of neural networks. The neural network is a machine learning technique among many others (SVM, Random Forest, Gradient Boosting...) which is particularly powerful if you have enough data to avoid overfitting and lead to the era of so-called deep learning. A sufficiently large neural network can learn to mimic any function from inputs to outputs, given enough (input,output) examples. We used the "vanilla" flavor of dense feed-forward neural networks with leaky rectified linear unit activations (leaky relu) and minibatch gradient descent with momentum. To learn about neural networks we recommend online courses, video series, blog posts and spamming @inoryy.
@@ -230,6 +227,11 @@ Empirically, we believe that the network stopped improving it terms of *TrueSkil
 ![](/img/alliterations/fig_Cols_and_Shields_vs_steps.png)
 ![](/img/alliterations/fig_RBD_RCPD.png)
 ![](/img/alliterations/fig_Win_Loss_vs_steps.png)
+
+## Passing the 100ko code size limit
+In order to use neural networks on CG, a major obstacle has to be overcome: the 100ko code size limit. This is due to having to include the weights of the neural network in the file. What we do is compile the AI locally and send the binary in a base85 encoding via [this tool](https://github.com/Agade09/CG-Send-Binary). You would need roughly 12 characters (12 bytes) to represent a 4 byte float in plain text code (e.g: 1.2345678e10). By compiling the float is properly represented as 4 bytes in binary format. Unfortunately to send the binary you have to convert to a text format. The most efficient you can do on ascii characters is base85 which inflates the size by 25% (every 4 bytes of binary is represented with 5 plain text characters). Further code size can be saved by stripping the binary and compressing with upx. One can also quantize the network and upload weights of arbitrary precision (e.g: 13 bits) by storing the coefficient array as a bitset.
+
+It is also possible, as fenrir did, to compress only the coefficients and upload unobfuscated mostly-plain-text code to CG.
 
 ## If you want to try...
 ### Supervised learning
