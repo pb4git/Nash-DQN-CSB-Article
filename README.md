@@ -126,7 +126,7 @@ Same as above, but with one neural network with 12 output values instead of two 
 #### Results
 Same as above. We made two completely independent implementations of this technique with bad results in both cases.
 
-### Attempt #3 : The Breakthrough !
+### Attempt #3: The Breakthrough !
 #### Inspiration from Minimax Q Learning
 Success came with inspiration from this [paper](https://www2.cs.duke.edu/courses/spring07/cps296.3/littman94markov.pdf) which describes a combination of Q learning and Minimax, the classic algorithm used for example by Stockfish in chess. Just like Q learning the paper dates from before the era of deep learning but can be adapted to neural networks, just like the DQN paper did with Q learning.
 
