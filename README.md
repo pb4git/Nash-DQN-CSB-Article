@@ -5,6 +5,7 @@ We are thrilled with this achievement and the fact that we have inspired other p
 CSB is a fertile multiplayer puzzle where the widest variety of algorithms is showcased at the top of the leaderboard before disseminating on the platform. And similarly with this work, we hope to bring new techniques of reinforcement learning on the platform.
 
 Illustration:
+
 ![Alt text](img/cgstats.png "cgstats")
 
 ? - Mentionner tous les hacks techniques pour faire passer un NN sur CG?
