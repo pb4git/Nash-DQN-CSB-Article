@@ -183,9 +183,6 @@ Training from scratch, in our best implementations, on a crappy laptop processor
  - within 12-24hours (*hard to tell...*) the network has converged and ceases to improve
 
 ## Results
-One picture is worth a thousand words.
-
-![](img/leaderboard.png "CG Leaderboard")
 ### Vanilla (Depth 0)
 Our Q-Learning framework trained a neural network to predict the expected future discounted rewards for the runner for pair of actions taken by the runner and the blocker on this turn.
 The iterative matrix-game solver is applied to the output to provide optimal mixed strategies for both agents in this zero-sum simultaenous game.
