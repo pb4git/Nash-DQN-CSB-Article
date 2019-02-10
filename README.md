@@ -196,6 +196,7 @@ Alpha Zero A2C
 Having introduced Q learning, let's talk about the simplest objective you can set yourself as a "Hello world" to get started. 
 One thing you can do is take an existing AI and learn to copy its actions by training a neural network via supervised learning. If you are confident you have a working neural network implementation, you can then try your hands at reinforcement learning. The simplest game to do so on CG, to our knowledge is CSB.
 [Here is a ready-made set of datapoints from which you may learn.](https://drive.google.com/file/d/0BwV4JhqN8FZaNWdKMldFNjVYRUU/view)
+Fun-fact : pb4 successfully trained his first neural network within Excel based on the dataset above.
 ### Reinforcement learning
 You can train a single runner to pass checkpoints as fast as possible with DQN in a 1 pod versus no enemies environment. The state can be represented with less than a dozen floating point values encoding the position of the next 2 checkpoints relative to the pod, its current speed and its current angle. If you succesfully train a runner agent, you can play greedily according to the Q values for both of your pods and thus make a double runner AI which in our experience can reach approximately rank 150 in legend.
 If you can succesfully do this you'll have achieved your first RL AI. In order to reach higher on the leaderboard training a blocker and a runner than can deal with blockers will be necessary.
