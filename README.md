@@ -1,4 +1,5 @@
-![Alt text](img/leaderboard.png "Title")
+![Alt text](img/leaderboard.png "CG Leaderboard")
+![Alt text](img/cgstats.png "cgstats")
 
 
 # How we applied Q-Learning to Coders Strike Back and reached the top of the leaderboard
