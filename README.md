@@ -1,7 +1,7 @@
 # How we applied Q-Learning to Coders Strike Back and reached the top of the leaderboard
 In 2017, we (Agade and pb4) had a go at cracking Coders Strike Back (CSB) with Reinforcement Learning methods. Despite mitigated results at the time, our second attempt took place early in 2019. This endeavor proved to be a huge success: we now occupy the number 1 spot on the leaderboard and have achieved over 95% winrate against Pen's previously uncontested AI.
 We are thrilled with this achievement and the fact that we have inspired other players to pursue the same goal. 
-CSB is a fertile multiplayer puzzle where the widest variety of algorithms is/are (? je dirais is) showcased at the top of the leaderboard before disseminating on the platform. And similarly with this work, we hope to bring new techniques of reinforcement learning on the platform.
+CSB is a fertile multiplayer puzzle where the widest variety of algorithms is showcased at the top of the leaderboard before disseminating on the platform. And similarly with this work, we hope to bring new techniques of reinforcement learning on the platform.
 
 1- Ré-expliquer comment on a fait un runner simple, ça permet de ré-introduire les bases du Q-learning (évaluer chaque action + lister les raffinements utilisés come PER IS, double, etc..)
 
@@ -93,7 +93,7 @@ Our understanding is that blocker (6) has learned to block a runner which tries 
 ### Failed attempt #1
 #### Description
 As discussed above, the main limitation we were faced with originated from the fact that only one agent learned to improve its policy from the environment while the other agent had a fixed policy.
-We created an environment with which two neural networks interacted: one controlled the blocker, the other one controlled the runner.
+We created an environment in which two neural networks interacted: one controlled the blocker, the other one controlled the runner.
 In a Q-learning framework, each agent predicted the expected future discounted reward for the 6 actions it was allowed to perform.
 Our hope was to train both agents simultaneously so that they would converge towards an optimal adversarial strategy.
 #### Results
@@ -106,11 +106,48 @@ Same as above, but with one neural network with 12 output values instead of two 
 #### Results
 Same as above. We made two completely independent implementations of this technique with bad results in both cases.
 
+### Minimax Q learning
 
+Success came with the discovery of this [paper](https://www2.cs.duke.edu/courses/spring07/cps296.3/littman94markov.pdf) which describes a combination of Q learning and Minimax, the classic algorithm used for example by Stockfish in chess. Just like Q learning the paper dates from before the era of deep learning but can be adapted to neural networks, just like the DQN paper did with Q learning.
 
+In minimax Q learning, the neural network outputs a matrix of Q values for each possible pair of actions of both players. Once the proper Q values have been learned by the network, the [N_Actions,N_Actions] matrix of Q values can then be used, in alternating-turn games to perform a classical minimax search, and in simultaneous-turn games to use techniques like matrix-game solvers. Because CSB is a simultaneous-turn game we will focus on the latter.
 
-3- Décrire notre approche avec Nactions^2, MatrixSolver
-Link l’article
+For solving matrix games we used [this algorithm](http://code.activestate.com/recipes/496825-game-theory-payoff-matrix-solver/), linked in Swagboy's Xmas Rush postmortem. As you may know, in a simultaneous-turn game, the notion of optimal move is replaced by the notion of optimal mixed strategy. For example in rock paper scissors, no one action is optimal, the mixed strategy [1/3,1/3,1/3] is. Given a matrix game, the previously linked solver, will find, given enough iterations, the nash equilibrium mixed strategy for both players.
+With these mixed strategies, the value V of any state can also be calculated as the probability of each action pair multiplied by its Q value:
+```
+float Mixed_Strat_Q_To_Value(Mixed_Strat_P1,Mixed_Strat_P2,Q_Values){
+	float value{0};
+	for(int p1_action_idx=0;p1_action_idx<N_Actions;++p1_action_idx){
+		float proba_1{Mixed_Strat_P1[p1_action_idx]};
+		for(int p2_action_idx=0;p2_action_idx<N_Actions;++p2_action_idx){
+			float proba_2{Mixed_Strat_P2[p2_action_idx]};
+			value+=proba_1*proba_2*Q[Index_fct(p1_action_idx,p2_action_idx)];
+		}
+	}
+	return value;
+}
+```
+As we discussed, in classical 1 player versus environment Q learning the bellman equation is given by
+```
+Q(state,action)=immediate_reward+γ*maxQ(next_state,action)
+```
+which can be rewritten as
+```
+V(next_state)=maxQ(next_state,action)
+Q(state,action)=immediate_reward+γ*V(next_state)
+```
+because the value of a state is naturally the sum of expected rewards from it by playing the best action. In the same way in minimax Q learning, for a simultaneous-move game, the Bellman equation is given by:
+```
+array<float,N_Actions*N_Actions> Q_Values=Minimax_Deep_Q_Network(next_state);
+array<array<float,N_Actions>,2> Mixed_Strat=Matrix_Game_Solver(Q_Values);
+V(next_state)=Mixed_Strat_Q_To_Value(Mixed_Strat,Q_Values)
+Q(state,action)=immediate_reward+γ*V(next_state)
+```
+The paper seemingly gives a different formula for the bellman equation at the bottom left of page 3. We do not understand why, and if someone does please answer my [stackexchange question](https://ai.stackexchange.com/questions/9919/using-the-opponents-mixed-strategy-in-estimating-the-state-value-in-minimax-q-l). The formula the paper seems to give, does not work well according to our tests.
+
+Now that we have transformed the problem back into the framework of 1 network controlling agents in an environment, we can use all the techniques of Deep Q Learning, Deep Double Q learning, prioritized experience replay etc... With this method we were able to train a runner and a blocker into some approximation of the nash equilibrium which reached very high levels of play on the leaderboard, easily rivalling all other search methods currently on the leaderboard.
+
+Training from scratch, in our best implementations, the runner should quickly start taking checkpoints and the blocker will start slowing down the runner later on in the training.
 
 4- Trois mots expliquant les rangs atteints en depth 0, 1, 2, MCTS
 
