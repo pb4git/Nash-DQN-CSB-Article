@@ -149,9 +149,20 @@ Now that we have transformed the problem back into the framework of 1 network co
 
 Training from scratch, in our best implementations, the runner should quickly start taking checkpoints and the blocker will start slowing down the runner later on in the training.
 
-4- Trois mots expliquant les rangs atteints en depth 0, 1, 2, MCTS
-
-
+## Results
+One picture is worth a thousand words. (see explanations below)
+### Vanilla (Depth 0)
+Our Q-Learning framework trained a neural network to predict the expected future discounted rewards for the runner for pair of actions taken by the runner and the blocker on this turn.
+The iterative matrix-game solver is applied to the output to provide optimal mixed strategies for both agents in this zero-sum simultaenous game.
+An action is sampled from our agents' mixed strategies and played. We call this approach "Depth 0" because there is no tree-search involved in the process.
+### Depth 1
+Given the mixed strategies and payoff matrix described in the *Depth 0* section, one can trivially calculate the gamestate's current value.
+This is usually called on CodinGame an "evaluation function", which can be plugged in many different search algorithms.
+In a Keep It Simple and Stupid approach, we went for an exhaustive depth 1 search.
+### Depth 2
+With improved calculation speed, the Neural Network was also plugged in a Depth 2 exhaustive search.
+### MCTS
+In our final - and best - version, a full fledged MCTS search was deployed and obtained 99% winrate (only 2 losses) during its 220 placement games.
 
 5- Ouverture sur le fait qu’il existe d’autres algos, illustrer avec ce que fait fenrir
 Alpha Zero A2C
