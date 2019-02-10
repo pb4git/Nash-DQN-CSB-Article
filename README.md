@@ -167,7 +167,7 @@ pair<Strategy, Strategy> Mixed_Strats = Matrix_Game_Solver(Q_Values);
 V(next_state) = Mixed_Strat_And_Q_To_Value(Mixed_Strats,Q_Values)
 Q(state,action) = immediate_reward+γ*V(next_state)
 ```
-As mentioned above, the paper seemingly gives a different formula for the bellman equation at the bottom left of page 3. We do not understand why, and if someone does please answer my [stackexchange question](https://ai.stackexchange.com/questions/9919/using-the-opponents-mixed-strategy-in-estimating-the-state-value-in-minimax-q-l).
+As mentioned above, the paper gives a different formula for the bellman equation at the bottom left of page 3.
 
 Now that we have transformed the problem back into the framework of 1 network controlling agents in an environment, we can use all the techniques of Deep Q Learning, Deep Double Q learning, prioritized experience replay etc... With this method we were able to train a runner and a blocker into some approximation of the Nash equilibrium which reached very high levels of play on the leaderboard, easily rivalling all other search methods currently on the leaderboard.
 
