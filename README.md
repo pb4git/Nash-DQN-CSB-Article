@@ -1,13 +1,11 @@
-![Alt text](img/leaderboard.png "CG Leaderboard")
-![Alt text](img/cgstats.png "cgstats")
-
-
 # How we applied Q-Learning to Coders Strike Back and reached the top of the leaderboard
+
 In 2017, we (Agade and pb4) had a go at cracking Coders Strike Back (CSB) with Reinforcement Learning methods. Despite mitigated results at the time, our second attempt took place early in 2019. This endeavor proved to be a huge success: we now occupy the number 1 spot on the leaderboard and have achieved over 95% winrate against Pen's previously uncontested AI.
 We are thrilled with this achievement and the fact that we have inspired other players to pursue the same goal. 
 CSB is a fertile multiplayer puzzle where the widest variety of algorithms is showcased at the top of the leaderboard before disseminating on the platform. And similarly with this work, we hope to bring new techniques of reinforcement learning on the platform.
 
-1- Ré-expliquer comment on a fait un runner simple, ça permet de ré-introduire les bases du Q-learning (évaluer chaque action + lister les raffinements utilisés come PER IS, double, etc..)
+Illustration:
+![Alt text](img/cgstats.png "cgstats")
 
 ? - Mentionner tous les hacks techniques pour faire passer un NN sur CG?
 
@@ -155,6 +153,7 @@ Training from scratch, in our best implementations, the runner should quickly st
 
 ## Results
 One picture is worth a thousand words. (see explanations below)
+![Alt text](img/leaderboard.png "CG Leaderboard")
 ### Vanilla (Depth 0)
 Our Q-Learning framework trained a neural network to predict the expected future discounted rewards for the runner for pair of actions taken by the runner and the blocker on this turn.
 The iterative matrix-game solver is applied to the output to provide optimal mixed strategies for both agents in this zero-sum simultaenous game.
