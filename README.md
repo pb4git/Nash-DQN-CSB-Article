@@ -1,4 +1,4 @@
-![Alt text](img/Screenshot from 2019-02-10 11-10-59.png "Title")
+![Alt text](CSB-Q-Learning/img/leaderboard.png "Title")
 
 
 # How we applied Q-Learning to Coders Strike Back and reached the top of the leaderboard
