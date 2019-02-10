@@ -206,6 +206,13 @@ An other, very famous, algorithm one could use is [Alpha Zero](https://arxiv.org
 
 # Appendix
 ## Training behavior: First Iterations
+Figures showing raw metrics extracted from one training run.
+Contrary to best practices, most metrics shown below have not been described in the article. This is a deliberate omission: the definition of most metrics would lead us to disclose most of the values used for our training hyper-parameters.
+The figures below illustrate the fact that it took:
+- 200 steps for the runner to learn a good policy
+- 800 steps for the blocker to start impacting the runner
+- 1000 steps for the runner and blocker to reach good equilibrium
+- 
 ![](/img/firstiterations/fig_AVG_TD_Error_vs_steps.png)
 ![](/img/firstiterations/fig_AvgQ_MaxQ.png)
 ![](/img/firstiterations/fig_CPs_vs_steps.png)
@@ -214,6 +221,12 @@ An other, very famous, algorithm one could use is [Alpha Zero](https://arxiv.org
 ![](/img/firstiterations/fig_Win_Loss_vs_steps.png)
 
 ## Training behavior: All Iterations
+The figures below illustrate the fact that:
+- it takes a very long time for the Temporal Difference error metric to reach a stable position
+- all other metrics have converged
+
+Empirically, the authors believe that the network stopped improving it terms of *TruSkill score when submitted on CG* after 4000 steps.
+
 ![](/img/alliterations/fig_AVG_TD_Error_vs_steps.png)
 ![](/img/alliterations/fig_AvgQ_MaxQ.png)
 ![](/img/alliterations/fig_CPs_vs_steps.png)
