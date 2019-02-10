@@ -44,15 +44,15 @@ See the [paper](https://arxiv.org/pdf/1509.06461.pdf) for a more detailed explan
 
 A major improvement we also used is prioritised experience replay where instead of selecting memories uniformily at random from the memory, transitions which are most misunderstood by the network have a higher probability of being selected. When transitions are experienced they are added to memory with a high priority, to encourage that transitions are learned from at least once. And when a transition is selected its Temporal Difference Error (TD Error) is measured and its priority is updated as:
 ```
-prio=(epsilon_prio+TD_Error)^prio_alpha
+prio = (epsilon_prio+TD_Error)^prio_alpha
 ```
 where the TD Error is the error on the supposed equality in the Bellman equation. We used the proportional prioritisation variant mentioned in the [paper](https://arxiv.org/pdf/1511.05952.pdf). This used a sum-tree data structure in order to be able to select samples according to priority in logarithmic time.
 ```
-P_prioritized=Sample_prio/Total_Prio_In_Sum_Tree
+P_prioritized = Sample_prio/Total_Prio_In_Sum_Tree
 ```
 Because samples are selected according to a different distribution to the distribution with which these transitions are experienced, an importance sampling (IS), correction is applied to the gradient:
 ```
-IS_Correction=P_uniform/P_prioritized=Sample_prio/(Memory_Size*Total_Prio_In_Sum_Tree)
+IS_Correction = P_uniform/P_prioritized = Sample_prio/(Memory_Size*Total_Prio_In_Sum_Tree)
 ```
 
 ## Training a single runner
@@ -158,19 +158,19 @@ float Mixed_Strat_And_Q_To_Value(Mixed_Strat_P1,Mixed_Strat_P2,Q_Values){
 ```
 As we discussed, in classical 1 player versus environment Q learning the bellman equation is given by
 ```
-Q(state,action)=immediate_reward+γ*maxQ(next_state,action)
+Q(state,action) = immediate_reward+γ*maxQ(next_state,action)
 ```
 which can be rewritten as
 ```
-V(next_state)=maxQ(next_state,action)
-Q(state,action)=immediate_reward+γ*V(next_state)
+V(next_state) = maxQ(next_state,action)
+Q(state,action) = immediate_reward+γ*V(next_state)
 ```
 because the value of a state is naturally the sum of expected rewards from it by playing the best action. In the same way in minimax Q learning, for a simultaneous-move game, the Bellman equation is given by:
 ```
-array<float,N_Actions*N_Actions> Q_Values=Minimax_Deep_Q_Network(next_state);
-pair<Strategy, Strategy> Mixed_Strats=Matrix_Game_Solver(Q_Values);
-V(next_state)=Mixed_Strat_And_Q_To_Value(Mixed_Strats,Q_Values)
-Q(state,action)=immediate_reward+γ*V(next_state)
+array<float,N_Actions*N_Actions> Q_Values = Minimax_Deep_Q_Network(next_state);
+pair<Strategy, Strategy> Mixed_Strats = Matrix_Game_Solver(Q_Values);
+V(next_state) = Mixed_Strat_And_Q_To_Value(Mixed_Strats,Q_Values)
+Q(state,action) = immediate_reward+γ*V(next_state)
 ```
 The paper seemingly gives a different formula for the bellman equation at the bottom left of page 3. We do not understand why, and if someone does please answer my [stackexchange question](https://ai.stackexchange.com/questions/9919/using-the-opponents-mixed-strategy-in-estimating-the-state-value-in-minimax-q-l). The formula the paper seems to give, does not work well according to our tests.
 
