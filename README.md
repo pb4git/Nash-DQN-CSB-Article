@@ -68,13 +68,14 @@ Rewards at each step are defined as follows:
  - 0 otherwise
   
  The runner considers 6 possible actions at each step:
-- [thrust 200, rotate left]
-- [thrust 200, no rotation]
-- [thrust 200, rotate right]
-- [no thrust, rotate left]
-- [no thrust, no rotation]
-- [no thrust, rotate right]
-
+```
+[thrust 200 ; rotate left ]
+[thrust 200 ; no rotation ]
+[thrust 200 ; rotate right]
+[no thrust  ; rotate left ]
+[no thrust  ; no rotation ]
+[no thrust  ; rotate right]
+```
 When compared to the best runner we could find (Bleuj's depth 12 Simulated Annealing double runner bot), our runner was only 5% slower to complete a race on average.
 This runner learns to complete a full race within 1 minute of training and converges to its best performance after 1 hour of training.
 
