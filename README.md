@@ -167,7 +167,7 @@ Q(state,action)=immediate_reward+γ*V(next_state)
 because the value of a state is naturally the sum of expected rewards from it by playing the best action. In the same way in minimax Q learning, for a simultaneous-move game, the Bellman equation is given by:
 ```
 array<float,N_Actions*N_Actions> Q_Values=Minimax_Deep_Q_Network(next_state);
-pair<array<float,N_Actions>, array<float,N_Actions>> Mixed_Strats=Matrix_Game_Solver(Q_Values);
+pair<Strategy, Strategy> Mixed_Strats=Matrix_Game_Solver(Q_Values);
 V(next_state)=Mixed_Strat_And_Q_To_Value(Mixed_Strats,Q_Values)
 Q(state,action)=immediate_reward+γ*V(next_state)
 ```
