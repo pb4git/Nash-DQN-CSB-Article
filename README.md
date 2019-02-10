@@ -73,7 +73,7 @@ Rewards are defined as follows:
 
 ### Limitations
 While this would be the perfect method to specialize against a specific bot on the leaderboard, one can not consider that the blocker will learn a good policy overall.
-Indeed, with this approach the blocker learns an optimal policy against a "dumb" runner which never learns to improve.
+Indeed, with this approach the blocker learns an optimal policy against a "static" runner which never learns to improve.
 
 ### Results
 This approach was used in 2017 in the following manner:
