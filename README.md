@@ -132,9 +132,7 @@ Success came with inspiration from this [paper](https://www2.cs.duke.edu/courses
 
 The neural network outputs a matrix of Q values for each possible pair of actions of both players. Once the proper Q values have been learned by the network, the [N_Actions,N_Actions] matrix of Q values can then be used, in alternating-turn games to perform a classical minimax search, and in simultaneous-turn games to use techniques like matrix-game solvers. Because CSB is a simultaneous-turn game we will focus on the latter.
 
-Our implementation differs from the paper in that we do not consider in Bellman's equation that the opponent takes the best action against our mixed strategy: both agents are forced to play their optimal mixed strategies to evaluate a state's value. 
-
-Vanilla implementation of the paper's algorithm failed to yield any positive training result.
+Our implementation differs from the paper in that we do not consider in Bellman's equation that the opponent takes the best action against our mixed strategy: both agents are forced to play their optimal mixed strategies to evaluate a state's value. Vanilla implementation of the paper's algorithm failed to yield any positive training result.
 
 #### Details
 
@@ -169,7 +167,7 @@ pair<Strategy, Strategy> Mixed_Strats = Matrix_Game_Solver(Q_Values);
 V(next_state) = Mixed_Strat_And_Q_To_Value(Mixed_Strats,Q_Values)
 Q(state,action) = immediate_reward+γ*V(next_state)
 ```
-The paper seemingly gives a different formula for the bellman equation at the bottom left of page 3. We do not understand why, and if someone does please answer my [stackexchange question](https://ai.stackexchange.com/questions/9919/using-the-opponents-mixed-strategy-in-estimating-the-state-value-in-minimax-q-l). The formula the paper seems to give, does not work well according to our tests.
+As mentioned above, the paper seemingly gives a different formula for the bellman equation at the bottom left of page 3. We do not understand why, and if someone does please answer my [stackexchange question](https://ai.stackexchange.com/questions/9919/using-the-opponents-mixed-strategy-in-estimating-the-state-value-in-minimax-q-l).
 
 Now that we have transformed the problem back into the framework of 1 network controlling agents in an environment, we can use all the techniques of Deep Q Learning, Deep Double Q learning, prioritized experience replay etc... With this method we were able to train a runner and a blocker into some approximation of the Nash equilibrium which reached very high levels of play on the leaderboard, easily rivalling all other search methods currently on the leaderboard.
 
