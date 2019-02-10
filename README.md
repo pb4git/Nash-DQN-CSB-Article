@@ -1,6 +1,8 @@
 # CSB-Q-Learning
 
-Since the new year we have been attempting reinforcement learning (RL) on Coders Strike Back (CSB) again. This time we have had a lot more success and reached the number 1 spot on the leaderboard, achieving close to 100% winrate against Pen's excellent AI which stood unchallenged for long. We are thrilled with this achievement and the fact that we have inspired other players like fenrir to pursue the same goal. With the Xmas Rush contest, players brought MCTS and simultaneous-move handling techniques which had been previously unseen on Codingame (CG). And similarly with this work we hope to bring new techniques of reinforcement learning on the platform.
+In 2017, we (Agade and pb4) had a go at cracking Coders Strike Back (CSB) with Reinforcement Learning methods. Despite mitigated results at the time, our second attempt took place early in 2019. This endeavor proved to be a huge success : we now occupy the number 1 spot on the leaderboard, and have achieved over 95% winrate against Pen's previously uncontested AI.
+We are thrilled with this achievement and the fact that we have inspired other players to pursue the same goal. 
+CSB is a fertile multiplayer puzzle where the widest variety of algorithms is/are (? je dirais is) showcased at the top of the leaderboard before disseminating on the platform. And similarly with this work, we hope to bring new techniques of reinforcement learning on the platform.
 
 1- Ré-expliquer comment on a fait un runner simple, ça permet de ré-introduire les bases du Q-learning (évaluer chaque action + lister les raffinements utilisés come PER IS, double, etc..)
 
