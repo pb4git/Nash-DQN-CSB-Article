@@ -4,11 +4,10 @@ In 2017, we (Agade and pb4) had a go at cracking Coders Strike Back (CSB) with R
 We are thrilled with this achievement and the fact that we have inspired other players to pursue the same goal. 
 CSB is a fertile multiplayer puzzle where the widest variety of algorithms is showcased at the top of the leaderboard before disseminating on the platform. And similarly with this work, we hope to bring new techniques of reinforcement learning on the platform.
 
-Illustration:
-
 ![Alt text](img/cgstats.png "cgstats")
 
-? - Mentionner tous les hacks techniques pour faire passer un NN sur CG?
+TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO
+Mentionner tous les hacks techniques pour faire passer un NN sur CG?
 
 ## Neural Networks
 
@@ -57,9 +56,27 @@ IS_Correction=P_uniform/P_prioritized=Sample_prio/(Memory_Size*Total_Prio_In_Sum
 
 ## Training a single runner
 
-Having introduced Q learning, let's talk about the simplest objective you can set yourself as a "Hello world" to get started. One thing you can do is take an existing AI and learn to copy its actions by training a neural network via supervised learning. If you are confident you have a working neural network implementation, you can then try your hands at reinforcement learning. The simplest game to do so on CG, to our knowledge is CSB. You can train a single runner to pass checkpoints as fast as possible with DQN in a 1 pod versus no enemies environment. The state can be represented with a dozen floating point values encoding the position of the next 2 checkpoints relative to the pod, its current speed and its current angle. If you succesfully train a runner agent, you can play greedily according to the Q values for both of your pods and thus make a double runner AI which in our experience can reach approximately rank 150 in legend.
+Q-Learning was first applied to train a single runner in an infinite environment, where the objective is to pass checkpoints as fast as possible. As such, the game is described in a very simplified way:
+* No lap number
+* No timeout
+* No opponent
+* No allied pod
+* No game ending
+ 
+Rewards at each step are defined as follows:
+ - +1 when the runner takes a checkpoint
+ - 0 otherwise
+  
+ The runner considers 6 possible actions at each step:
+- [thrust 200, rotate left]
+- [thrust 200, no rotation]
+- [thrust 200, rotate right]
+- [no thrust, rotate left]
+- [no thrust, no rotation]
+- [no thrust, rotate right]
 
-If you can succesfully do this you'll have achieved your first RL AI. In order to reach higher on the leaderboard training a blocker and a runner than can deal with blockers will be necessary.
+When compared to the best runner we could find (Bleuj's depth 12 Simulated Annealing double runner bot), our runner was only 5% slower to complete a race on average.
+This runner learns to complete a full race within 1 minute of training and converges to its best performance after 1 hour of training.
 
 ## Training a blocker against a fixed opponent
 
@@ -67,7 +84,7 @@ Q-Learning was described above as a value-based technique where an agent learns 
 
 If the runner is considered as part of the environment, a blocker can be trained with the same Q-learning framework that was described for the runner alone.
 
-Rewards are defined as follows:
+Rewards at each step are defined as follows:
  - -1 when the runner takes a checkpoint
  - 0 otherwise
 
@@ -170,3 +187,15 @@ In our final - and best - version, a full fledged MCTS search was deployed and o
 
 5- Ouverture sur le fait qu’il existe d’autres algos, illustrer avec ce que fait fenrir
 Alpha Zero A2C
+
+
+# Appendix
+
+## If you want to try...
+### Supervised learning
+Having introduced Q learning, let's talk about the simplest objective you can set yourself as a "Hello world" to get started. 
+One thing you can do is take an existing AI and learn to copy its actions by training a neural network via supervised learning. If you are confident you have a working neural network implementation, you can then try your hands at reinforcement learning. The simplest game to do so on CG, to our knowledge is CSB.
+[Here is a ready-made set of datapoints from which you may learn.](https://drive.google.com/file/d/0BwV4JhqN8FZaNWdKMldFNjVYRUU/view)
+### Reinforcement learning
+You can train a single runner to pass checkpoints as fast as possible with DQN in a 1 pod versus no enemies environment. The state can be represented with less than a dozen floating point values encoding the position of the next 2 checkpoints relative to the pod, its current speed and its current angle. If you succesfully train a runner agent, you can play greedily according to the Q values for both of your pods and thus make a double runner AI which in our experience can reach approximately rank 150 in legend.
+If you can succesfully do this you'll have achieved your first RL AI. In order to reach higher on the leaderboard training a blocker and a runner than can deal with blockers will be necessary.
