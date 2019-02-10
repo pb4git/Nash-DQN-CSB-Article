@@ -212,7 +212,7 @@ The figures below illustrate the fact that it took:
 - 200 steps for the runner to learn a good policy
 - 800 steps for the blocker to start impacting the runner
 - 1000 steps for the runner and blocker to reach good equilibrium
-- 
+
 ![](/img/firstiterations/fig_AVG_TD_Error_vs_steps.png)
 ![](/img/firstiterations/fig_AvgQ_MaxQ.png)
 ![](/img/firstiterations/fig_CPs_vs_steps.png)
