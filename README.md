@@ -62,6 +62,7 @@ Q-Learning was first applied to train a single runner in an infinite environment
 * No opponent
 * No allied pod
 * No game ending
+* Only the two next checkpoints are known
  
 Rewards at each step are defined as follows:
  - +1 when the runner takes a checkpoint
@@ -77,7 +78,7 @@ Rewards at each step are defined as follows:
 [no thrust  ; rotate right]
 ```
 When compared to the best runner we could find (Bleuj's depth 12 Simulated Annealing double runner bot), our runner was only 5% slower to complete a race on average.
-This runner learns to complete a full race within 1 minute of training and converges to its best performance after 1 hour of training.
+This runner learns to complete a full race within 30 seconds of training and converges to its best performance after 1 hour of training.
 
 ## Training a blocker against a fixed opponent
 
@@ -127,16 +128,22 @@ Same as above, but with one neural network with 12 output values instead of two 
 #### Results
 Same as above. We made two completely independent implementations of this technique with bad results in both cases.
 
-### Minimax Q learning
+### The Breakthrough !
+#### Inspiration from Minimax Q Learning
+Success came with inspiration from this [paper](https://www2.cs.duke.edu/courses/spring07/cps296.3/littman94markov.pdf) which describes a combination of Q learning and Minimax, the classic algorithm used for example by Stockfish in chess. Just like Q learning the paper dates from before the era of deep learning but can be adapted to neural networks, just like the DQN paper did with Q learning.
 
-Success came with the discovery of this [paper](https://www2.cs.duke.edu/courses/spring07/cps296.3/littman94markov.pdf) which describes a combination of Q learning and Minimax, the classic algorithm used for example by Stockfish in chess. Just like Q learning the paper dates from before the era of deep learning but can be adapted to neural networks, just like the DQN paper did with Q learning.
+The neural network outputs a matrix of Q values for each possible pair of actions of both players. Once the proper Q values have been learned by the network, the [N_Actions,N_Actions] matrix of Q values can then be used, in alternating-turn games to perform a classical minimax search, and in simultaneous-turn games to use techniques like matrix-game solvers. Because CSB is a simultaneous-turn game we will focus on the latter.
 
-In minimax Q learning, the neural network outputs a matrix of Q values for each possible pair of actions of both players. Once the proper Q values have been learned by the network, the [N_Actions,N_Actions] matrix of Q values can then be used, in alternating-turn games to perform a classical minimax search, and in simultaneous-turn games to use techniques like matrix-game solvers. Because CSB is a simultaneous-turn game we will focus on the latter.
+Our implementation differs from the paper in that we do not consider in Bellman's equation that the opponent takes the best action against our mixed strategy: both agents are forced to play their optimal mixed strategies to evaluate a state's value. 
 
-For solving matrix games we used [this algorithm](http://code.activestate.com/recipes/496825-game-theory-payoff-matrix-solver/), linked in Swagboy's Xmas Rush postmortem. As you may know, in a simultaneous-turn game, the notion of optimal move is replaced by the notion of optimal mixed strategy. For example in rock paper scissors, no one action is optimal, the mixed strategy [1/3,1/3,1/3] is. Given a matrix game, the previously linked solver, will find, given enough iterations, the nash equilibrium mixed strategy for both players.
+Vanilla implementation of the paper's algorithm failed to yield any positive training result.
+
+#### Details
+
+For solving zero-sum simultaneous matrix games we used [this iterative algorithm](http://code.activestate.com/recipes/496825-game-theory-payoff-matrix-solver/), linked in Swagboy's Xmas Rush postmortem. As you may know, in a simultaneous-turn game, the notion of optimal move is replaced by the notion of optimal mixed strategy. For example in rock paper scissors, no one action is optimal, the mixed strategy [1/3,1/3,1/3] is. Given a matrix game, the previously linked solver, will find, given enough iterations, the nash equilibrium mixed strategy for both players.
 With these mixed strategies, the value V of any state can also be calculated as the probability of each action pair multiplied by its Q value:
 ```
-float Mixed_Strat_Q_To_Value(Mixed_Strat_P1,Mixed_Strat_P2,Q_Values){
+float Mixed_Strat_And_Q_To_Value(Mixed_Strat_P1,Mixed_Strat_P2,Q_Values){
 	float value{0};
 	for(int p1_action_idx=0;p1_action_idx<N_Actions;++p1_action_idx){
 		float proba_1{Mixed_Strat_P1[p1_action_idx]};
@@ -160,18 +167,22 @@ Q(state,action)=immediate_reward+γ*V(next_state)
 because the value of a state is naturally the sum of expected rewards from it by playing the best action. In the same way in minimax Q learning, for a simultaneous-move game, the Bellman equation is given by:
 ```
 array<float,N_Actions*N_Actions> Q_Values=Minimax_Deep_Q_Network(next_state);
-array<array<float,N_Actions>,2> Mixed_Strat=Matrix_Game_Solver(Q_Values);
-V(next_state)=Mixed_Strat_Q_To_Value(Mixed_Strat,Q_Values)
+pair<array<float,N_Actions>, array<float,N_Actions>> Mixed_Strats=Matrix_Game_Solver(Q_Values);
+V(next_state)=Mixed_Strat_And_Q_To_Value(Mixed_Strats,Q_Values)
 Q(state,action)=immediate_reward+γ*V(next_state)
 ```
 The paper seemingly gives a different formula for the bellman equation at the bottom left of page 3. We do not understand why, and if someone does please answer my [stackexchange question](https://ai.stackexchange.com/questions/9919/using-the-opponents-mixed-strategy-in-estimating-the-state-value-in-minimax-q-l). The formula the paper seems to give, does not work well according to our tests.
 
 Now that we have transformed the problem back into the framework of 1 network controlling agents in an environment, we can use all the techniques of Deep Q Learning, Deep Double Q learning, prioritized experience replay etc... With this method we were able to train a runner and a blocker into some approximation of the nash equilibrium which reached very high levels of play on the leaderboard, easily rivalling all other search methods currently on the leaderboard.
 
-Training from scratch, in our best implementations, the runner should quickly start taking checkpoints and the blocker will start slowing down the runner later on in the training.
+Training from scratch, in our best implementations, on a crappy laptop processor:
+ - the runner learns to finish races within 30 seconds of training
+ - the blocker will *wake-up* and make the runner timeout its first race after 7 minutes of training
+ - within 30mn of training, the AI challenges pen on the leaderboard
+ - within 12-24hours (*hard to tell...*) the network has converged and ceases to improve
 
 ## Results
-One picture is worth a thousand words. (see explanations below)
+One picture is worth a thousand words.
 ![Alt text](img/leaderboard.png "CG Leaderboard")
 ### Vanilla (Depth 0)
 Our Q-Learning framework trained a neural network to predict the expected future discounted rewards for the runner for pair of actions taken by the runner and the blocker on this turn.
@@ -186,9 +197,10 @@ With improved calculation speed, the Neural Network was also plugged in a Depth 
 ### MCTS
 In our final - and best - version, a full fledged MCTS search was deployed and obtained 99% winrate (only 2 losses) during its 220 placement games.
 
+TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO
 5- Ouverture sur le fait qu’il existe d’autres algos, illustrer avec ce que fait fenrir
 Alpha Zero A2C
-
+TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO
 
 # Appendix
 
