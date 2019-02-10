@@ -199,8 +199,13 @@ With improved calculation speed, the Neural Network was also plugged in a Depth 
 ### MCTS
 In our final - and best - version, a full fledged MCTS search was deployed and obtained 99% winrate (only 2 losses) during its 220 placement games.
 
-## Training behavior
+## Other Algorithms
+We used Q learning but it is important to understand there are many other reinforcement learning algorithms which could be used. For example, fenrir recently made a very strong bot using a flavor of the [A2C](https://medium.freecodecamp.org/an-intro-to-advantage-actor-critic-methods-lets-play-sonic-the-hedgehog-86d6240171d) algorithm. This algorithm is part of a broader family of policy gradient algorithms, where instead of learning a value function as in Q learning, a policy is learned. One argument in favor of such methods is that learning a policy is in principle simpler because it is intuitively easier to decide which move is best, than it is to understand the precise value one can expect from playing a move.
 
+An other, very famous, algorithm one could use is [Alpha Zero](https://arxiv.org/pdf/1712.01815.pdf), where a network outputs both a policy and a value in a given state and a Monte carlo search is used as a target to improve the policy and value. As searching is inherently part of the algorithm, it is even more convenient than our Q learning approach to use the 75ms to enhance play. And as we saw, using a MCTS search on top of our Q values gave very large improvements.
+
+# Appendix
+## Training behavior: First Iterations
 ![](/img/firstiterations/fig_AVG_TD_Error_vs_steps.png)
 ![](/img/firstiterations/fig_AvgQ_MaxQ.png)
 ![](/img/firstiterations/fig_CPs_vs_steps.png)
@@ -208,12 +213,14 @@ In our final - and best - version, a full fledged MCTS search was deployed and o
 ![](/img/firstiterations/fig_RBD_RCPD.png)
 ![](/img/firstiterations/fig_Win_Loss_vs_steps.png)
 
-## Other Algorithms
-We used Q learning but it is important to understand there are many other reinforcement learning algorithms which could be used. For example, fenrir recently made a very strong bot using a flavor of the [A2C](https://medium.freecodecamp.org/an-intro-to-advantage-actor-critic-methods-lets-play-sonic-the-hedgehog-86d6240171d) algorithm. This algorithm is part of a broader family of policy gradient algorithms, where instead of learning a value function as in Q learning, a policy is learned. One argument in favor of such methods is that learning a policy is in principle simpler because it is intuitively easier to decide which move is best, than it is to understand the precise value one can expect from playing a move.
+## Training behavior: All Iterations
+![](/img/alliterations/fig_AVG_TD_Error_vs_steps.png)
+![](/img/alliterations/fig_AvgQ_MaxQ.png)
+![](/img/alliterations/fig_CPs_vs_steps.png)
+![](/img/alliterations/fig_Cols_and_Shields_vs_steps.png)
+![](/img/alliterations/fig_RBD_RCPD.png)
+![](/img/alliterations/fig_Win_Loss_vs_steps.png)
 
-An other, very famous, algorithm one could use is [Alpha Zero](https://arxiv.org/pdf/1712.01815.pdf), where a network outputs both a policy and a value in a given state and a Monte carlo search is used as a target to improve the policy and value. As searching is inherently part of the algorithm, it is even more convenient than our Q learning approach to use the 75ms to enhance play. And as we saw, using a MCTS search on top of our Q values gave very large improvements.
-
-# Appendix
 ## If you want to try...
 ### Supervised learning
 Having introduced Q learning, let's talk about the simplest objective you can set yourself as a "Hello world" to get started. 
