@@ -17,7 +17,7 @@ Q learning is originally a tabular reinforcement learning technique on games wit
 ```
 Q(state,action)=reward_1+γ*reward_2+γ^2*reward_3+...
 ```
-with γ<=1 a discount factor. It is allowed for γ to be 1 in finitely long games, but for inifinitely long games γ<1 otherwise Q values are infinite. γ also serves to make the AI collect rewards sooner rather than later as future rewards are discounted.
+with γ<=1 a discount factor. It is allowed for γ to be 1 in finitely long games, but for infinitely long games γ<1 otherwise Q values are infinite. γ also serves to make the AI collect rewards sooner rather than later as future rewards are discounted.
 
 The goal of Q learning is to learn these Q values, corresponding to perfect play and then play according to these perfect (state,action) values (e.g: in every state greedily choose the action with the highest Q value). Tabular Q learning starts with a randomly initialized grid of size N\_States\*N\_Actions and iteratively converges to the true Q values by playing the game and applying the Bellman equation to every (state,action)->(next_state) transition the AI experiences:
 ```
@@ -39,7 +39,7 @@ DQN(state,action):=immediate_reward+γ*DQN_Frozen(next_state,target_action)
 ```
 See the [paper](https://arxiv.org/pdf/1509.06461.pdf) for a more detailed explanation. Whereas "supervised learning" learns from a dataset of (input,output) by backpropagating errors on the desired output, reinforcement learning techniques "find their own target" on which to backpropagate. And in the case of Q learning it is given by this Bellman equation.
 
-A major improvement we also used is prioritised experience replay where instead of selecting memories uniformily at random from the memory, transitions which are most misunderstood by the network have a higher probability of being selected. When transitions are experienced they are added to memory with a high priority, to encourage that transitions are learned from at least once. And when a transition is selected its Temporal Difference Error (TD Error) is measured and its priority is updated as:
+A major improvement we also used is prioritised experience replay where instead of selecting memories uniformly at random from the memory, transitions which are most misunderstood by the network have a higher probability of being selected. When transitions are experienced they are added to memory with a high priority, to encourage that transitions are learned from at least once. And when a transition is selected its Temporal Difference Error (TD Error) is measured and its priority is updated as:
 ```
 prio = (epsilon_prio+TD_Error)^prio_alpha
 ```
@@ -106,7 +106,7 @@ Other agents were trained by repeating more iterations, but those agents perform
 
     (5) Train a runner against  (4)
     (6) Train a blocker against (5)
-Our understanding is that blocker (6) has learned to block a runner which tries to go around the blocker. Blocker (6) was never placed in an environment against runner (1) which goes straight to the checkpoint: hence the blocker's unability to obstruct runner (1)'s path.
+Our understanding is that blocker (6) has learned to block a runner which tries to go around the blocker. Blocker (6) was never placed in an environment against runner (1) which goes straight to the checkpoint: hence the blocker's inability to obstruct runner (1)'s path.
 
 
 ## Simultaneous runner/blocker training
@@ -138,7 +138,7 @@ Vanilla implementation of the paper's algorithm failed to yield any positive tra
 
 #### Details
 
-For solving zero-sum simultaneous matrix games we used [this iterative algorithm](http://code.activestate.com/recipes/496825-game-theory-payoff-matrix-solver/), linked in Swagboy's Xmas Rush postmortem. As you may know, in a simultaneous-turn game, the notion of optimal move is replaced by the notion of optimal mixed strategy. For example in rock paper scissors, no one action is optimal, the mixed strategy [1/3,1/3,1/3] is. Given a matrix game, the previously linked solver, will find, given enough iterations, the nash equilibrium mixed strategy for both players.
+For solving zero-sum simultaneous matrix games we used [this iterative algorithm](http://code.activestate.com/recipes/496825-game-theory-payoff-matrix-solver/), linked in Swagboy's Xmas Rush postmortem. As you may know, in a simultaneous-turn game, the notion of optimal move is replaced by the notion of optimal mixed strategy. For example in rock paper scissors, no one action is optimal, the mixed strategy [1/3,1/3,1/3] is. Given a matrix game, the previously linked solver, will find, given enough iterations, the Nash equilibrium mixed strategy for both players.
 With these mixed strategies, the value V of any state can also be calculated as the probability of each action pair multiplied by its Q value:
 ```
 float Mixed_Strat_And_Q_To_Value(Mixed_Strat_P1,Mixed_Strat_P2,Q_Values){
@@ -171,7 +171,7 @@ Q(state,action) = immediate_reward+γ*V(next_state)
 ```
 The paper seemingly gives a different formula for the bellman equation at the bottom left of page 3. We do not understand why, and if someone does please answer my [stackexchange question](https://ai.stackexchange.com/questions/9919/using-the-opponents-mixed-strategy-in-estimating-the-state-value-in-minimax-q-l). The formula the paper seems to give, does not work well according to our tests.
 
-Now that we have transformed the problem back into the framework of 1 network controlling agents in an environment, we can use all the techniques of Deep Q Learning, Deep Double Q learning, prioritized experience replay etc... With this method we were able to train a runner and a blocker into some approximation of the nash equilibrium which reached very high levels of play on the leaderboard, easily rivalling all other search methods currently on the leaderboard.
+Now that we have transformed the problem back into the framework of 1 network controlling agents in an environment, we can use all the techniques of Deep Q Learning, Deep Double Q learning, prioritized experience replay etc... With this method we were able to train a runner and a blocker into some approximation of the Nash equilibrium which reached very high levels of play on the leaderboard, easily rivalling all other search methods currently on the leaderboard.
 
 Training from scratch, in our best implementations, on a crappy laptop processor:
  - the runner learns to finish races within 30 seconds of training
@@ -182,7 +182,7 @@ Training from scratch, in our best implementations, on a crappy laptop processor
 ## Results
 ### Vanilla (Depth 0)
 Our Q-Learning framework trained a neural network to predict the expected future discounted rewards for the runner for pair of actions taken by the runner and the blocker on this turn.
-The iterative matrix-game solver is applied to the output to provide optimal mixed strategies for both agents in this zero-sum simultaenous game.
+The iterative matrix-game solver is applied to the output to provide optimal mixed strategies for both agents in this zero-sum simultaneous game.
 An action is sampled from our agents' mixed strategies and played. We call this approach "Depth 0" because there is no tree-search involved in the process.
 ### Depth 1
 Given the mixed strategies and payoff matrix described in the *Depth 0* section, one can trivially calculate the gamestate's current value.
@@ -229,7 +229,7 @@ Empirically, we believe that the network stopped improving it terms of *TrueSkil
 ![](/img/alliterations/fig_Win_Loss_vs_steps.png)
 
 ## Passing the 100ko code size limit
-In order to use neural networks on CG, a major obstacle has to be overcome: the 100ko code size limit. This is due to having to include the weights of the neural network in the file. What we do is compile the AI locally and send the binary in a base85 encoding via [this tool](https://github.com/Agade09/CG-Send-Binary). You would need roughly 12 characters (12 bytes) to represent a 4 byte float in plain text code (e.g: 1.2345678e10). By compiling the float is properly represented as 4 bytes in binary format. Unfortunately to send the binary you have to convert to a text format. The most efficient you can do on ascii characters is base85 which inflates the size by 25% (every 4 bytes of binary is represented with 5 plain text characters). Further code size can be saved by stripping the binary and compressing with upx. One can also quantize the network and upload weights of arbitrary precision (e.g: 13 bits) by storing the coefficient array as a bitset.
+In order to use neural networks on CG, a major obstacle has to be overcome: the 100ko code size limit. This is due to having to include the weights of the neural network in the file. What we do is compile the AI locally and send the binary in a base85 encoding via [this tool](https://github.com/Agade09/CG-Send-Binary). You would need roughly 12 characters (12 bytes) to represent a 4 byte float in plain text code (e.g: 1.2345678e10). By compiling the float is properly represented as 4 bytes in binary format. Unfortunately to send the binary you have to convert to a text format. The most efficient you can do on ascii characters is base85 which inflates the size by 25% (every 4 bytes of binary is represented with 5 plain text characters). Further code size can be saved by stripping the binary and compressing with upx. One can also quantize the network and upload weights of arbitrary precision (e.g: 13 bits) by storing the coefficient array as a bitset. There are also many compiler options and tricks which are used for example in the embedded systems world to minimise code size.
 
 It is also possible, as fenrir did, to compress only the coefficients and upload unobfuscated mostly-plain-text code to CG.
 
@@ -240,5 +240,5 @@ One thing you can do is take an existing AI and learn to copy its actions by tra
 [Here is a ready-made set of datapoints from which you may learn.](https://drive.google.com/file/d/0BwV4JhqN8FZaNWdKMldFNjVYRUU/view)
 Fun-fact : pb4 successfully trained his first neural network within Excel based on the dataset above.
 ### Reinforcement learning
-You can train a single runner to pass checkpoints as fast as possible with DQN in a 1 pod versus no enemies environment. The state can be represented with less than a dozen floating point values encoding the position of the next 2 checkpoints relative to the pod, its current speed and its current angle. If you succesfully train a runner agent, you can play greedily according to the Q values for both of your pods and thus make a double runner AI which in our experience can reach approximately rank 150 in legend.
-If you can succesfully do this you'll have achieved your first RL AI. In order to reach higher on the leaderboard training a blocker and a runner than can deal with blockers will be necessary.
+You can train a single runner to pass checkpoints as fast as possible with DQN in a 1 pod versus no enemies environment. The state can be represented with less than a dozen floating point values encoding the position of the next 2 checkpoints relative to the pod, its current speed and its current angle. If you successfully train a runner agent, you can play greedily according to the Q values for both of your pods and thus make a double runner AI which in our experience can reach approximately rank 150 in legend.
+If you can successfully do this you'll have achieved your first RL AI. In order to reach higher on the leaderboard training a blocker and a runner than can deal with blockers will be necessary.
