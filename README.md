@@ -207,7 +207,7 @@ With improved calculation speed, the Neural Network was also plugged in a Depth 
 In our final - and best - version, a full fledged MCTS search was deployed and obtained 99% winrate (only 2 losses) during its 220 placement games.
 ### Emergent behavior
 [In this replay](https://www.codingame.com/replay/370528771?f=340), the red blocker decides to face away from the orange runner and shield continuously. Seeing how it took 80 turns for the runner to push the blocker forward, this is an effective strategy.
-The authors never witnessed such a behavior in CSB games before.
+The authors never witnessed such a behavior in CSB games played with classical search algorithms and hand-crafted evaluation functions before.
 
 ## Other Algorithms
 We used Q learning but it is important to understand there are many other reinforcement learning algorithms which could be used. For example, fenrir recently made a very strong bot using a flavor of the [A2C](https://medium.freecodecamp.org/an-intro-to-advantage-actor-critic-methods-lets-play-sonic-the-hedgehog-86d6240171d) algorithm. This algorithm is part of a broader family of policy gradient algorithms, where instead of learning a value function as in Q learning, a policy is learned. One argument in favor of such methods is that learning a policy is in principle simpler because it is intuitively easier to decide which move is best, than it is to understand the precise value one can expect from playing a move.
