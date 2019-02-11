@@ -5,7 +5,7 @@ We are thrilled with this achievement and the fact that we have inspired other p
 
 CSB is a unique multiplayer game where the widest variety of algorithms have dominated the leaderboard through successive time periods. With this work, we hope to bring new techniques of reinforcement learning on the platform.
 
-![Alt text](img/cgstats.png "cgstats")
+![Leaderboard CGstats](img/cgstats.png "cgstats")
 
 ## Neural Networks
 
@@ -13,19 +13,26 @@ In this article we assume some knowledge of neural networks (NN). The neural net
 
 ## Q Learning
 
-Q learning is originally a tabular reinforcement learning technique on games with a finite number of states and actions. The value of a state is typically denoted V, this would be the evaluation function a lot of CG players are used to. Q(state,action) is instead the evaluation of playing an action from a state. Q represents the discounted sum of future rewards assuming play is continued according to perfect play:
+### Definitions
+Q Learning is originally a tabular reinforcement learning technique applied to games with a finite number of states and actions. The **value of a state** is typically denoted **V**: this would be the evaluation function a lot of Codingame players are used to. **Q(state,action)** represents the evaluation of playing an **action** when the agent perceives the environment's **state**. The Q value represents the expected discounted sum of future rewards assuming perfect play in the future:
 ```
-Q(state,action)=reward_1+γ*reward_2+γ^2*reward_3+...
+Q(state,action) = reward_1 + γ*reward_2 + γ^2*reward_3 + ...
 ```
 with γ<=1 a discount factor.
-
-The goal of Q learning is to learn these Q values, corresponding to perfect play and then play according to these perfect (state,action) values (e.g: in every state greedily choose the action with the highest Q value). Tabular Q learning starts with a randomly initialized grid of size N\_States\*N\_Actions and iteratively converges to the true Q values by playing the game and applying the Bellman equation to every (state,action)->(next_state) transition the AI experiences:
+A **policy** is a mapping from perceived states in the environment to actions to be taken in those states.
+If an agent knows the exact Q-value function from its environment, an optimal policy may be derived:
 ```
-Q(state,action)=immediate_reward+γ*maxQ(next_state,action)
+Policy(state) = action which maximizes Q(state, action)
+```
+
+### Algorithm
+**The goal of Q learning is to learn these Q values corresponding to perfect play**. Tabular Q learning starts with a randomly initialized grid of size N\_States\*N\_Actions and iteratively converges to the true Q values by playing the game and applying the Bellman equation to every (state,action)->(next_state) transition the AI experiences:
+```
+Q(state, action) = immediate_reward(state, action) + γ*max_over_possible_actions( Q(next_state, possible_action))
 ```
 It is allowed for γ to be 1 in finitely long games, but for infinitely long games γ<1 otherwise Q values are infinite. γ also serves to make the AI collect rewards sooner rather than later as future rewards are discounted.
 
-In 2015 Deepmind published the Deep Q learning [paper](https://arxiv.org/pdf/1312.5602.pdf) (DQN). Instead of having Q learning restricted to games with a finite number of states and actions they generalise it to infinite games by using a Neural Network as a function approximator for Q values. Thus instead of looking up Qs in a table, you would feed in a representation of the state action pair and the network would output the Q value. For computational efficiency they restricted themselves to games with finite actions and the network outputs the Q values for all actions of a given state in one forward pass. They call this NN a Deep Q Network (DQN).
+In 2015 Deepmind published the Deep Q learning [paper](https://arxiv.org/pdf/1312.5602.pdf) (DQN). Instead of having Q learning restricted to games with a finite number of states and actions they generalise it to infinite games by using a Neural Network as a function approximator for Q values. Thus instead of looking up Qs in a table, you would feed in a representation of the state action pair and the network would output the Q value. For computational efficiency they have the network output the Q values for all actions of a given state in one forward pass. They call this NN a Deep Q Network (DQN).
 
 If you read the paper carefully you will find that they use several techniques to achieve convergence: 
 
