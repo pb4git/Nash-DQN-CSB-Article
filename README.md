@@ -32,7 +32,7 @@ Q(state, action) = immediate_reward(state, action) + γ*max_over_possible_action
 ```
 It is allowed for γ to be 1 in finitely long games, but for infinitely long games γ<1 otherwise Q values are infinite. γ also serves to make the AI collect rewards sooner rather than later as future rewards are discounted.
 
-In 2015 Deepmind published the Deep Q learning [paper](https://arxiv.org/pdf/1312.5602.pdf) (DQN). Instead of having Q learning restricted to games with a finite number of states and actions they generalise it to infinite games by using a Neural Network as a function approximator for Q values. Thus instead of looking up Qs in a table, you would feed in a representation of the state action pair and the network would output the Q value. For computational efficiency they have the network output the Q values for all actions of a given state in one forward pass. They call this NN a Deep Q Network (DQN).
+In 2015 Deepmind published the Deep Q learning [paper](https://arxiv.org/pdf/1312.5602.pdf) (DQN). While tabular Q learning works well, it requires building a table of all (state,action) pairs which is quickly computationally intractable. With neural networks you can instead approximate this table and therefore apply Q learning to much larger games and even continuous state spaces. Instead of looking up Qs in a table, you would feed in a representation of the state action pair and the network would output the Q value. For computational efficiency they have the network output the Q values for all actions of a given state in one forward pass. They call this NN a Deep Q Network (DQN).
 
 If you read the paper carefully you will find that they use several techniques to achieve convergence: 
 
