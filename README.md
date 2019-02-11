@@ -9,7 +9,7 @@ CSB is a unique multiplayer game where the widest variety of algorithms have dom
 
 ## Neural Networks
 
-In this article we assume some knowledge of neural networks (NN). The neural network is a machine learning technique among many others (SVM, Random Forest, Gradient Boosting...) which is particularly powerful if you have enough data to avoid overfitting. Overfitting happens when your model specialises/memorises your relatively small dataset without learning to generalise to data not part of your training examples. Neural networks were first introduced in the 60s but with improvements and access to the computational power of the GPU the era of so-called deep learning started circa 2012 with [record accuracy](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf) on imagenet. A sufficiently large neural network can learn to mimic any function from inputs to outputs, given enough (input,output) examples. For this reason NNs are commonly referred to as "function approximators". We used the "vanilla" flavor of dense feed-forward neural networks with leaky rectified linear unit activations (leaky relu) and minibatch gradient descent with momentum. To learn about neural networks we recommend online courses, video series, blog posts and spamming @inoryy.
+In this article we assume some knowledge of neural networks (NN). The neural network is a machine learning technique among many others (SVM, Random Forest, Gradient Boosting...) which is particularly powerful if you have enough data to avoid overfitting. Overfitting happens when your model specialises/memorises your relatively small dataset without learning to generalise to data not part of your training examples. Neural networks were first introduced in the 60s but with improvements and access to the computational power of the GPU the era of so-called deep learning started circa 2012 with [record accuracy](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf) on imagenet. A sufficiently large neural network can learn to mimic any function from inputs to outputs, given enough (input,output) examples. We used the "vanilla" flavor of dense feed-forward neural networks with leaky rectified linear unit activations (leaky relu) and minibatch gradient descent with momentum. To learn about neural networks we recommend online courses, video series, blog posts and spamming @inoryy.
 
 ## Q Learning
 
@@ -25,16 +25,21 @@ If an agent knows the exact Q-value function from its environment, an optimal po
 Policy(state) = action which maximizes Q(state, action)
 ```
 
-### Algorithm
+### Tabular Q-Learning
 **The goal of Q learning is to learn these Q values corresponding to perfect play**. Tabular Q learning starts with a randomly initialized grid of size N\_States\*N\_Actions and iteratively converges to the true Q values by playing the game and applying the Bellman equation to every (state,action)->(next_state) transition the AI experiences:
 ```
 Q(state, action) = immediate_reward(state, action) + γ*max_over_possible_actions( Q(next_state, possible_action))
 ```
 It is allowed for γ to be 1 in finitely long games, but for infinitely long games γ<1 otherwise Q values are infinite. γ also serves to make the AI collect rewards sooner rather than later as future rewards are discounted.
 
-In 2015 Deepmind published the Deep Q learning [paper](https://arxiv.org/pdf/1312.5602.pdf) (DQN). While tabular Q learning works well, it requires building a table of all (state,action) pairs which is quickly computationally intractable. With neural networks you can instead approximate this table and therefore apply Q learning to much larger games and even continuous state spaces. Instead of looking up Qs in a table, you would feed in a representation of the state action pair and the network would output the Q value. For computational efficiency they have the network output the Q values for all actions of a given state in one forward pass. They call this NN a Deep Q Network (DQN).
+While Tabular Q-Learning works well and is guaranteed to converge, it is often limited due to the large action-state table that must be built.
+### Deep Q-Learning
 
-If you read the paper carefully you will find that they use several techniques to achieve convergence: 
+In 2015 Deepmind published the Deep Q learning [paper](https://arxiv.org/pdf/1312.5602.pdf) (DQN). Neural networks offer generalization capability which allow to approximate the (state, action) table for much larger and even continuous state-action spaces. Instead of looking up Qs in a table, you would feed in a representation of the state action pair and the network would output the Q value. For computational efficiency the network outputs the Q values for all actions of a given state in one forward pass. This technique is called Deep Q Network (DQN).
+
+While the use of neural networks allows learning in larger state-action spaces, the algorithm no longer provides any theoretical guarantee of convergence. Various techniques described below are used to improve the likelihood of converging towards a good approximation of the Q-values.
+
+Techniques described in the DQN paper include: 
 
 * Gradient clipping to avoid destroying the network by backpropagating huge gradients on transitions the network really doesn't understand.
 * Experience replay memory to store transitions and backpropagate gradients from a mixture of different states. As opposed to only learning from the current transition.
@@ -207,7 +212,7 @@ The authors never witnessed such a behavior in CSB games before.
 ## Other Algorithms
 We used Q learning but it is important to understand there are many other reinforcement learning algorithms which could be used. For example, fenrir recently made a very strong bot using a flavor of the [A2C](https://medium.freecodecamp.org/an-intro-to-advantage-actor-critic-methods-lets-play-sonic-the-hedgehog-86d6240171d) algorithm. This algorithm is part of a broader family of policy gradient algorithms, where instead of learning a value function as in Q learning, a policy is learned. One argument in favor of such methods is that learning a policy is in principle simpler because it is intuitively easier to decide which move is best, than it is to understand the precise value one can expect from playing a move.
 
-An other, very famous, algorithm one could use is [Alpha Zero](https://arxiv.org/pdf/1712.01815.pdf), where a network outputs both a policy and a value in a given state and a Monte carlo tree search is used as a target to improve the policy and value. As searching is inherently part of the algorithm, it is even more convenient than our Q learning approach to use the 75ms to enhance play. And as we saw, using a MCTS search on top of our Q values gave very large improvements.
+An other, very famous, algorithm one could use is [Alpha Zero](https://arxiv.org/pdf/1712.01815.pdf), where a network outputs both a policy and a value in a given state and a Monte carlo search is used as a target to improve the policy and value. As searching is inherently part of the algorithm, it is even more convenient than our Q learning approach to use the 75ms to enhance play. And as we saw, using a MCTS search on top of our Q values gave very large improvements.
 
 # Appendix
 ## Training behavior: First Iterations
