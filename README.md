@@ -26,7 +26,7 @@ Policy(state) = action which maximizes Q(state, action)
 ```
 
 ### Tabular Q-Learning
-**The goal of Q learning is to learn these Q values corresponding to perfect play**. Tabular Q learning starts with a randomly initialized grid of size N\_States\*N\_Actions and iteratively converges to the true Q values by playing the game and applying the Bellman equation to every (state,action)->(next_state) transition the AI experiences:
+**The goal of Q learning is to learn the Q values corresponding to perfect play**. Tabular Q learning starts with a randomly initialized grid of size N\_States\*N\_Actions and iteratively converges to the true Q values by playing the game and applying the Bellman equation to every (state,action)->(next_state) transition the AI experiences:
 ```
 Q(state, action) = immediate_reward(state, action) + γ*max_over_possible_actions( Q(next_state, possible_action))
 ```
