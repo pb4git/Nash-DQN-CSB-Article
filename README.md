@@ -9,7 +9,7 @@ CSB is a unique multiplayer game where the widest variety of algorithms have dom
 
 ## Neural Networks
 
-In this article we assume some knowledge of neural networks. The neural network is a machine learning technique among many others (SVM, Random Forest, Gradient Boosting...) which is particularly powerful if you have enough data to avoid overfitting and lead to the era of so-called deep learning. A sufficiently large neural network can learn to mimic any function from inputs to outputs, given enough (input,output) examples. We used the "vanilla" flavor of dense feed-forward neural networks with leaky rectified linear unit activations (leaky relu) and minibatch gradient descent with momentum. To learn about neural networks we recommend online courses, video series, blog posts and spamming @inoryy.
+In this article we assume some knowledge of neural networks (NN). The neural network is a machine learning technique among many others (SVM, Random Forest, Gradient Boosting...) which is particularly powerful if you have enough data to avoid overfitting. Overfitting happens when your model specialises/memorises your relatively small dataset without learning to generalise to data not part of your training examples. Neural networks were first introduced in the 60s but with improvements and access to the computational power of the GPU the era of so-called deep learning started circa 2012 with [record accuracy](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf) on imagenet. A sufficiently large neural network can learn to mimic any function from inputs to outputs, given enough (input,output) examples. We used the "vanilla" flavor of dense feed-forward neural networks with leaky rectified linear unit activations (leaky relu) and minibatch gradient descent with momentum. To learn about neural networks we recommend online courses, video series, blog posts and spamming @inoryy.
 
 ## Q Learning
 
@@ -24,7 +24,7 @@ The goal of Q learning is to learn these Q values, corresponding to perfect play
 Q(state,action)=immediate_reward+γ*maxQ(next_state,action)
 ```
 
-In 2015 Deepmind published the Deep Q learning [paper](https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf) (DQN). Instead of having Q learning restricted to games with a finite number of states and actions they generalise it to infinite games by using a Neural Network (NN) as a function approximator for Q values. Thus instead of looking up Qs in a table, you would feed in a representation of the state action pair and the network would output the Q value. For computational efficiency they restricted themselves to games with finite actions and the network outputs the Q values for all actions of a given state in one forward pass. They call this NN a Deep Q Network (DQN).
+In 2015 Deepmind published the Deep Q learning [paper](https://arxiv.org/pdf/1312.5602.pdf) (DQN). Instead of having Q learning restricted to games with a finite number of states and actions they generalise it to infinite games by using a Neural Network as a function approximator for Q values. Thus instead of looking up Qs in a table, you would feed in a representation of the state action pair and the network would output the Q value. For computational efficiency they restricted themselves to games with finite actions and the network outputs the Q values for all actions of a given state in one forward pass. They call this NN a Deep Q Network (DQN).
 
 If you read the paper carefully you will find that they use several techniques to achieve convergence: 
 
@@ -37,6 +37,7 @@ Deepmind has since published several papers improving upon DQN. For example Deep
 target_action=argmaxDQN(next_state,action)
 DQN(state,action):=immediate_reward+γ*DQN_Frozen(next_state,target_action)
 ```
+
 See the [paper](https://arxiv.org/pdf/1509.06461.pdf) for a more detailed explanation. Whereas "supervised learning" learns from a dataset of (input,output) by backpropagating errors on the desired output, reinforcement learning techniques "find their own target" on which to backpropagate. And in the case of Q learning it is given by this Bellman equation.
 
 A major improvement we also used is prioritised experience replay where instead of selecting memories uniformly at random from the memory, transitions which are most misunderstood by the network have a higher probability of being selected. When transitions are experienced they are added to memory with a high priority, to encourage that transitions are learned from at least once. And when a transition is selected its Temporal Difference Error (TD Error) is measured and its priority is updated as:
