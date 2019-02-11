@@ -17,12 +17,13 @@ Q learning is originally a tabular reinforcement learning technique on games wit
 ```
 Q(state,action)=reward_1+γ*reward_2+γ^2*reward_3+...
 ```
-with γ<=1 a discount factor. It is allowed for γ to be 1 in finitely long games, but for infinitely long games γ<1 otherwise Q values are infinite. γ also serves to make the AI collect rewards sooner rather than later as future rewards are discounted.
+with γ<=1 a discount factor.
 
 The goal of Q learning is to learn these Q values, corresponding to perfect play and then play according to these perfect (state,action) values (e.g: in every state greedily choose the action with the highest Q value). Tabular Q learning starts with a randomly initialized grid of size N\_States\*N\_Actions and iteratively converges to the true Q values by playing the game and applying the Bellman equation to every (state,action)->(next_state) transition the AI experiences:
 ```
 Q(state,action)=immediate_reward+γ*maxQ(next_state,action)
 ```
+It is allowed for γ to be 1 in finitely long games, but for infinitely long games γ<1 otherwise Q values are infinite. γ also serves to make the AI collect rewards sooner rather than later as future rewards are discounted.
 
 In 2015 Deepmind published the Deep Q learning [paper](https://arxiv.org/pdf/1312.5602.pdf) (DQN). Instead of having Q learning restricted to games with a finite number of states and actions they generalise it to infinite games by using a Neural Network as a function approximator for Q values. Thus instead of looking up Qs in a table, you would feed in a representation of the state action pair and the network would output the Q value. For computational efficiency they restricted themselves to games with finite actions and the network outputs the Q values for all actions of a given state in one forward pass. They call this NN a Deep Q Network (DQN).
 
