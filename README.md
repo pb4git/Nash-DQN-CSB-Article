@@ -146,7 +146,7 @@ Success came with inspiration from this [paper](https://www2.cs.duke.edu/courses
 
 The neural network outputs a matrix of Q values for each possible pair of actions of both players. Once the proper Q values have been learned by the network, the [N_Actions,N_Actions] matrix of Q values can then be used, in alternating-turn games to perform a classical minimax search, and in simultaneous-turn games to use techniques like matrix-game solvers. Because CSB is a simultaneous-turn game we will focus on the latter.
 
-Our implementation differs from the paper in that we do not consider in Bellman's equation that the opponent takes the best action against our mixed strategy: both agents are forced to play their optimal mixed strategies to evaluate a state's value. Vanilla implementation of the paper's algorithm failed to yield any positive training result.
+Our implementation differs from the paper in that we do not consider in Bellman's equation that the opponent takes the best action against our mixed strategy: both agents are forced to play their optimal mixed strategies to evaluate a state's value. Vanilla implementation of the paper's algorithm failed to yield any positive training result. Whereas the Minimax Q learning paper suggests learning to play the mixed policy which maximises the worst case reward, we have players play their Nash equilibrium strategy. For this reason we thought to call this Nash-DQN. We then found [this paper](http://www.jmlr.org/papers/volume4/hu03a/hu03a.pdf) as prior art which mentions this idea in the tabular Q learning case.
 
 #### Details
 
