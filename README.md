@@ -51,7 +51,7 @@ target_action=argmaxDQN(next_state,action)
 DQN(state,action):=immediate_reward+γ*DQN_Frozen(next_state,target_action)
 ```
 
-See the [paper](https://arxiv.org/pdf/1509.06461.pdf) for a more detailed explanation. Whereas "supervised learning" learns from a dataset of (input,output) by backpropagating errors on the desired output, reinforcement learning techniques "find their own target" on which to backpropagate. And in the case of Q learning it is given by this Bellman equation.
+See the [paper](https://arxiv.org/pdf/1509.06461.pdf) for a more detailed explanation.
 
 A major improvement we also used is prioritised experience replay where instead of selecting memories uniformly at random from the memory, transitions which are most misunderstood by the network have a higher probability of being selected. When transitions are experienced they are added to memory with a high priority, to encourage that transitions are learned from at least once. And when a transition is selected its Temporal Difference Error (TD Error) is measured and its priority is updated as:
 ```
