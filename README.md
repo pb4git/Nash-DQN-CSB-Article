@@ -1,4 +1,4 @@
-# Nash-DQN to reach #1 on Coders Strike Back
+# Mastering CSB with Nash-DQN
 
 In 2017, we (Agade and pb4) had a go at cracking Coders Strike Back (CSB) with Reinforcement Learning methods. Despite unimpressive results at the time, our second attempt took place early in 2019. This endeavor proved to be a huge success: we now occupy the number 1 spot on the leaderboard and have achieved over 95% winrate against Pen's previously uncontested AI.
 We are thrilled with this achievement and the fact that we have inspired other players to pursue the same goal. 
