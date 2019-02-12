@@ -35,7 +35,7 @@ It is allowed for γ to be 1 in finitely long games, but for infinitely long gam
 While Tabular Q-Learning works well and is guaranteed to converge, it is often limited due to the large action-state table that must be built.
 ### Deep Q-Learning
 
-In 2015 Deepmind published the Deep Q learning [paper](https://arxiv.org/pdf/1312.5602.pdf) (DQN). Neural networks offer generalization capability which allows to approximate the (state, action) table for larger and even continuous state-action spaces. Instead of looking up Qs in a table, you would feed in a representation of the state action pair and the network would output the Q value. For computational efficiency the network outputs the Q values for all actions of a given state in one forward pass. This technique is called Deep Q Network (DQN).
+In 2013 Deepmind published the Deep Q learning [paper](https://arxiv.org/pdf/1312.5602.pdf) (DQN). Neural networks offer generalization capability which allows to approximate the (state, action) table for larger and even continuous state-action spaces. Instead of looking up Qs in a table, you would feed in a representation of the state action pair and the network would output the Q value. For computational efficiency the network outputs the Q values for all actions of a given state in one forward pass. This technique is called Deep Q Network (DQN).
 
 While the use of neural networks allows learning in larger state-action spaces, the algorithm no longer provides any theoretical guarantee of convergence. Various techniques described below are used to improve the likelihood of converging towards a good approximation of the Q-values.
 
