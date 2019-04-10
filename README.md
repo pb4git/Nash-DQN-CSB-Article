@@ -1,6 +1,6 @@
 # Mastering *Coders Strike Back* with Nash-DQN
 
-In 2017, we (Agade and pb4) had a go at cracking Coders Strike Back ([CSB](https://www.codingame.com/multiplayer/bot-programming/coders-strike-back)) - a pod-racing competition on the [Codingame](https://www.codingame.com/) platform - with Reinforcement Learning methods. Despite unimpressive results at the time, our second attempt took place early in 2019. This endeavor proved to be a huge success: we now occupy the number 1 spot on the leaderboard and have achieved over 95% winrate against Pen's previously uncontested AI.
+In 2017, we (Agade and pb4) had a go at cracking [Coders Strike Back](https://www.codingame.com/multiplayer/bot-programming/coders-strike-back) - a pod-racing competition on the [Codingame](https://www.codingame.com/) platform - with Reinforcement Learning methods. Despite unimpressive results at the time, our second attempt took place early in 2019. This endeavor proved to be a huge success: we now occupy the number 1 spot on the leaderboard and have achieved over 95% winrate against Pen's previously uncontested AI.
 We are thrilled with this achievement and the fact that we have inspired other players to pursue the same goal. 
 
 CSB is a unique multiplayer game where the widest variety of algorithms have dominated the leaderboard through successive time periods. With this work, we hope to bring new techniques of reinforcement learning on the platform.
