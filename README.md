@@ -150,7 +150,7 @@ Our implementation differs from the paper in that we do not consider in Bellman'
 
 #### Details
 
-For solving zero-sum simultaneous matrix games we used [this iterative algorithm](http://code.activestate.com/recipes/496825-game-theory-payoff-matrix-solver/), linked in Swagboy's Xmas Rush postmortem. As you may know, in a simultaneous-turn game, the notion of optimal move is replaced by the notion of optimal mixed strategy. For example in rock paper scissors, no one action is optimal, the mixed strategy [1/3,1/3,1/3] is. Given a matrix game, the previously linked solver, will find, given enough iterations, the Nash equilibrium mixed strategy for both players.
+For solving zero-sum simultaneous matrix games we used [this iterative algorithm](http://code.activestate.com/recipes/496825-game-theory-payoff-matrix-solver/), linked in [Swagboy's Xmas Rush postmortem](https://www.codingame.com/forum/t/xmash-rush-cc07-feedback-strategies/74346/26). As you may know, in a simultaneous-turn game, the notion of optimal move is replaced by the notion of optimal mixed strategy. For example in rock paper scissors, no one action is optimal, the mixed strategy [1/3,1/3,1/3] is. Given a matrix game, the previously linked solver, will find, given enough iterations, the Nash equilibrium mixed strategy for both players.
 With these mixed strategies, the value V of any state can also be calculated as the probability of each action pair multiplied by its Q value:
 ```
 float Mixed_Strat_And_Q_To_Value(Mixed_Strat_P1,Mixed_Strat_P2,Q_Values){
